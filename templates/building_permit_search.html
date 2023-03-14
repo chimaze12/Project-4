@@ -1,0 +1,81 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Building Permit</title>
+        <link rel="shortcut icon" href="#">
+        
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/styles/building_permit_search.css">
+
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+    </head>
+    <body> 
+        <div id="mapid"></div>
+        <div id="search_box">
+
+            <div class="header">
+                <h2> Building Permits Search and Incidents Cases in Calgary </h2>
+                
+            </div>
+
+            <form action="{{url_for('after_searching')}}" method="POST">
+
+                <div class="search_group">
+                    
+                    <label for="searchFilter">Issue Dates:</label>
+                    <input type="text" name="daterange" value="{{date_value}}" />
+
+                    <button type="submit" id="submit">Search</button>
+
+
+                </div>
+                
+                <!-- <button type="submit">Search</button> -->
+
+            </form>
+
+        </div>.
+            
+            <!-- <div id="mapid"></div> -->
+
+            <script src="{{url_for('static', filename='js/building_permit_search.js') }}"></script>
+            
+        {% if not(geocode== "") %} 
+               <script type="text/javascript" src="{{url_for('static', filename='js/building_permit_after_search.js') }}"></script>
+               <script type="text/javascript">
+                 start_marking({{geocode|tojson|safe}});
+
+               </script>
+            
+        {% endif %}
+            {% if not(initial_page) and (geocode== "") %}
+            <script type="text/javascript">
+                alert("No building permits for this date range.");
+              </script>
+            {% endif %}
+
+
+
+        
+    </body>
+</html>
